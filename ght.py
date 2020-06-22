@@ -99,14 +99,14 @@ class Todoist:
         return None
 
     def add_gh_issue_to_todoist(self, issue: Issue):
-        t_project = self.project_mapping.get(issue.repo, self.default)
+        t_project = self.project_mapping.get(issue.repo, self.default_project)
 
         top_item = self.client.items.add(
             issue.markdown_link,
             project_id = t_project['id'],
-            labels = [self.h],
+            labels = [self.gh],
         )
-        content = f"#managed-by-ght\nghid={issue.id}"
+        content = f"#managed-by-ght\nghid={issue._issue.id}"
         self.client.notes.add(top_item['id'], content)
 
         self.client.items.add("Make PR", parent_id = top_item['id'], labels=[])
