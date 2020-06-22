@@ -1,0 +1,7 @@
+mapping:
+  gtback/dotfiles: Technology
+  gtback/ght: Projects
+default: TestProject
+
+ght_label: ght
+waiting_label: waiting
