@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import sys
+
 import github3
 import todoist
 import yaml
@@ -143,4 +145,8 @@ def main(dry_run):
                 t.add_gh_issue_to_todoist(issue)
 
 if __name__ == "__main__":
-    main(dry_run=True)
+    dry_run = False
+    if "-n" in sys.argv:
+        dry_run = True
+
+    main(dry_run)
