@@ -2,11 +2,13 @@
 
 import sys
 
+from colorama import init, Fore
 import github3
 import todoist
 import yaml
 
 MAX_TITLE_WORDS = 5
+init(autoreset=True)
 
 
 class Issue:
@@ -127,20 +129,22 @@ def main(dry_run):
 
     me = g.me()
     search_results = g.search_issues(f"is:issue is:open assignee:{me.login}")
-    issues = [Issue(sr.issue) for sr in search_results]
+    issues = sorted([Issue(sr.issue) for sr in search_results], key=lambda x: x.slug)
     print(f"Found {len(issues)} issues assigned to {me.login}")
 
     for issue in issues:
         print(f"- {issue.slug} - {issue.title}")
+    print()
 
     t = Todoist(conf)
+    print()
 
     for issue in issues:
         existing_item = t.get_managed_item(issue._issue.id)
         if existing_item:
             print(f"{issue.slug}: Item already exists: https://todoist.com/showTask?id={existing_item['item']['id']}")
         else:
-            print(f"{issue.slug}: Creating item")
+            print(Fore.GREEN + f"{issue.slug}: Creating item")
             if not dry_run:
                 t.add_gh_issue_to_todoist(issue)
 
