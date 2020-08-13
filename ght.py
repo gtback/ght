@@ -88,7 +88,7 @@ class Todoist:
         self.client.sync()
         gh_id = str(gh_id)
         for note in self.client.state["notes"]:
-            if note['is_deleted'] == 1:
+            if note.data.get('is_deleted') == 1:
                 continue
             if note['content'].startswith("#managed-by-ght"):
                 content = note['content']
