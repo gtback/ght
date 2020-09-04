@@ -45,6 +45,7 @@ def parse_note(content):
 class Todoist:
 
     def __init__(self, conf):
+        self._project_cache = {}
         ttoken = open(".todoist-token").read().strip()
         self.client = todoist.TodoistAPI(ttoken)
 
@@ -53,22 +54,25 @@ class Todoist:
         # Label to add to tasks which involve waiting for someone else.
         self.waiting = self.get_or_create_label(conf['waiting_label'])['id']
 
+        self.client.sync()
         self.default_project = self.get_project(conf['default'])
         self.project_mapping = {}
         for k, v in conf['mapping'].items():
             self.project_mapping[k] = self.get_project(v)
 
     def get_project(self, name):
-        self.client.sync()
-        p = None
+        if name in self._project_cache:
+            return self._project_cache[name]
+        proj = None
         for project in self.client.state['projects']:
             if project['name'] == name:
-                p = project
-        if not p:
+                proj = project
+        if not proj:
             raise ValueError(f"No Project '{name}'")
         else:
-            print(f"Found project '{name}': {p['id']}")
-        return p
+            print(f"Found project '{name}': {proj['id']}")
+        self._project_cache[name] = proj
+        return proj
 
     def get_or_create_label(self, name):
         GRAY = 48
