@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 
 from colorama import init, Fore
@@ -128,7 +129,11 @@ class Todoist:
 def main(dry_run):
     conf = yaml.safe_load(open("ght.conf.yaml"))
 
-    ghtoken = open(".ghtoken").read().strip()
+    # Get GitHub token from environment variable, otherwise fall back to
+    # `.ghtoken` config file.
+    ghtoken = os.environ.get("GITHUB_TOKEN")
+    if not ghtoken:
+        ghtoken = open(".ghtoken").read().strip()
     g = github3.login(token=ghtoken)
 
     me = g.me()
