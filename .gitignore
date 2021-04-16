@@ -11,6 +11,7 @@ ght.conf.yaml
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/spellright.dict
 *.code-workspace
 
 ### VisualStudioCode Patch ###
@@ -159,4 +160,3 @@ dmypy.json
 .pytype/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
-
