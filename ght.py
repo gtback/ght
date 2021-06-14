@@ -133,7 +133,12 @@ def main(dry_run):
     # `.ghtoken` config file.
     ghtoken = os.environ.get("GITHUB_TOKEN")
     if not ghtoken:
-        ghtoken = open(".ghtoken").read().strip()
+        try:
+            ghtoken = open(".ghtoken").read().strip()
+        except:
+            print("No GitHub token available. Set GITHUB_TOKEN or create .ghtoken file")
+            sys.exit(1)
+
     g = github3.login(token=ghtoken)
 
     me = g.me()
