@@ -61,6 +61,9 @@ class Todoist:
         for k, v in conf['mapping'].items():
             self.project_mapping[k] = self.get_project(v)
 
+        # Cache mapping of GitHub ID to Item ID that represents it.
+        self.github_items = self.load_notes()
+
     def get_project(self, name):
         if name in self._project_cache:
             return self._project_cache[name]
@@ -90,22 +93,31 @@ class Todoist:
         return l
 
     def get_managed_item(self, gh_id):
-        self.client.sync()
         gh_id = str(gh_id)
+
+        item_id = self.github_items.get(gh_id)
+
+        if item_id is not None:
+            # If item has been deleted, this will return None. That's OK.
+            return self.client.items.get(item_id)
+
+        return None
+
+    def load_notes(self):
+        print("Loading Todoist Note Cache")
+        self.client.sync()
+        # Mapping of GitHub ID (contained in a note) to item_id that contains that note.
+        github_items = {}
+
         for note in self.client.state["notes"]:
             if note.data.get('is_deleted') == 1:
                 continue
             if note['content'].startswith("#managed-by-ght"):
-                content = note['content']
-                data = parse_note(content)
-                if data.get("ghid") == gh_id:
-                    item = self.client.items.get(note['item_id'])
-                    # The item the note refers to may have been deleted, in
-                    # which case it won't get returned here.
-                    if not item:
-                        continue
-                    return item
-        return None
+                data = parse_note(note['content'])
+                if 'ghid' in data:
+                    github_items[data['ghid']] = note['item_id']
+
+        return github_items
 
     def add_gh_issue_to_todoist(self, issue: Issue):
         t_project = self.project_mapping.get(issue.repo, self.default_project)
@@ -153,6 +165,7 @@ def main(dry_run):
     t = Todoist(conf)
     print()
 
+    t.client.sync()
     for issue in issues:
         existing_item = t.get_managed_item(issue._issue.id)
         if existing_item:
