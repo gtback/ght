@@ -4,12 +4,6 @@
 #
 #    update-python-deps.sh
 #
-appnope==0.1.2 \
-    --hash=sha256:93aa393e9d6c54c5cd570ccadd8edad61ea0c4b9ea7a01409020c9aa019eb442 \
-    --hash=sha256:dd83cd4b5b460958838f6eb3000c660b1f9caf2a5b1de4264e941512f603258a
-    # via
-    #   ipykernel
-    #   ipython
 argon2-cffi==21.1.0 \
     --hash=sha256:165cadae5ac1e26644f5ade3bd9c18d89963be51d9ea8817bd671006d7909057 \
     --hash=sha256:217b4f0f853ccbbb5045242946ad2e162e396064575860141b71a85eb47e475a \
@@ -192,9 +186,9 @@ ipykernel==6.6.0 \
     #   jupyter-console
     #   notebook
     #   qtconsole
-ipython==7.30.1 \
-    --hash=sha256:cb6aef731bf708a7727ab6cde8df87f0281b1427d41e65d62d4b68934fa54e97 \
-    --hash=sha256:fc60ef843e0863dd4e24ab2bb5698f071031332801ecf8d1aeb4fb622056545c
+ipython==7.31.1 \
+    --hash=sha256:55df3e0bd0f94e715abd968bedd89d4e8a7bce4bf498fb123fed4f5398fea874 \
+    --hash=sha256:b5548ec5329a4bcf054a5deed5099b0f9622eb9ea51aaa7104d215fece201d8c
     # via
     #   ipykernel
     #   ipywidgets
