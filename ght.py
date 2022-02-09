@@ -4,6 +4,7 @@ import os
 import sys
 
 from colorama import init, Fore
+import click
 import github3
 import todoist
 import yaml
@@ -138,7 +139,14 @@ class Todoist:
         self.client.commit()
 
 
-def main(dry_run):
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+@click.option("-n", "--dry-run", is_flag=True)
+def sync(dry_run):
     conf = yaml.safe_load(open("ght.conf.yaml"))
 
     # Get GitHub token from environment variable, otherwise fall back to
@@ -176,8 +184,4 @@ def main(dry_run):
                 t.add_gh_issue_to_todoist(issue)
 
 if __name__ == "__main__":
-    dry_run = False
-    if "-n" in sys.argv:
-        dry_run = True
-
-    main(dry_run)
+    cli()
