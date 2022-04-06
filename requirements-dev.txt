@@ -165,7 +165,7 @@ entrypoints==0.3 \
     # via
     #   jupyter-client
     #   nbconvert
-github3.py==3.0.0 \
+github3-py==3.0.0 \
     --hash=sha256:42f97ba5aa8d7bd3aa1ba0e3fc701e46003835f6c5cc39472dbfc47468342b59 \
     --hash=sha256:a9134cb9efd334b1644ad7c5ee3ff3ff488317c4549ffc0e8d82e4d63383a1a4
     # via -r requirements.in
@@ -257,7 +257,7 @@ jupyterlab-widgets==1.0.2 \
 jwcrypto==1.0 \
     --hash=sha256:db93a656d9a7a35dda5a68deb5c9f301f4e60507d8aef1559e0637b9ac497137 \
     --hash=sha256:f88816eb0a41b8f006af978ced5f171f33782525006cdb055b536a40f4d46ac9
-    # via github3.py
+    # via github3-py
 markupsafe==2.0.1 \
     --hash=sha256:01a9b8ea66f1658938f65b93a85ebe8bc016e6769611be228d797c9d998dd298 \
     --hash=sha256:023cb26ec21ece8dc3907c0e8320058b2e0cb3c55cf9564da612bc325bed5e64 \
@@ -364,9 +364,9 @@ nest-asyncio==1.5.4 \
     #   jupyter-client
     #   nbclient
     #   notebook
-notebook==6.4.6 \
-    --hash=sha256:5cad068fa82cd4fb98d341c052100ed50cd69fbfb4118cb9b8ab5a346ef27551 \
-    --hash=sha256:7bcdf79bd1cda534735bd9830d2cbedab4ee34d8fe1df6e7b946b3aab0902ba3
+notebook==6.4.10 \
+    --hash=sha256:2408a76bc6289283a8eecfca67e298ec83c67db51a4c2e1b713dd180bb39e90e \
+    --hash=sha256:49cead814bff0945fcb2ee07579259418672ac175d3dc3d8102a4b0a656ed4df
     # via
     #   jupyter
     #   widgetsnbextension
@@ -464,7 +464,7 @@ python-dateutil==2.8.2 \
     --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86 \
     --hash=sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9
     # via
-    #   github3.py
+    #   github3-py
     #   jupyter-client
 pyyaml==6.0 \
     --hash=sha256:0283c35a6a9fbf047493e3a0ce8d79ef5030852c51e9d911a27badfde0605293 \
@@ -565,7 +565,7 @@ requests==2.26.0 \
     --hash=sha256:6c1246513ecd5ecd4528a0906f910e8f0f9c6b8ec72030dc9fd154dc1a6efd24 \
     --hash=sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7
     # via
-    #   github3.py
+    #   github3-py
     #   todoist-python
 send2trash==1.8.0 \
     --hash=sha256:d2c24762fd3759860a0aff155e45871447ea58d2be6bdd39b5c8f966a0c99c2d \
@@ -658,7 +658,7 @@ traitlets==5.1.1 \
 uritemplate==4.1.1 \
     --hash=sha256:4346edfc5c3b79f694bccd6d6099a322bbeb628dbf2cd86eea55a456ce5124f0 \
     --hash=sha256:830c08b8d99bdd312ea4ead05994a38e8936266f84b9a7878232db50b044e02e
-    # via github3.py
+    # via github3-py
 urllib3==1.26.7 \
     --hash=sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece \
     --hash=sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844
