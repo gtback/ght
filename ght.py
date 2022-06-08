@@ -139,6 +139,20 @@ class Todoist:
         self.client.commit()
 
 
+class GitHub:
+
+    def __init__(self, token):
+        self.client = github3.login(token=token)
+        self.me = self.client.me()
+
+    @property
+    def login(self):
+        return self.me.login
+
+    def get_assigned_issues(self):
+        return self.client.search_issues(f"is:issue is:open assignee:{self.login}")
+
+
 @click.group()
 def cli():
     pass
@@ -159,12 +173,11 @@ def sync(dry_run):
             print("No GitHub token available. Set GITHUB_TOKEN or create .ghtoken file")
             sys.exit(1)
 
-    g = github3.login(token=ghtoken)
+    g = GitHub(ghtoken)
 
-    me = g.me()
-    search_results = g.search_issues(f"is:issue is:open assignee:{me.login}")
+    search_results = g.get_assigned_issues()
     issues = sorted([Issue(sr.issue) for sr in search_results], key=lambda x: x.slug)
-    print(f"Found {len(issues)} issues assigned to {me.login}")
+    print(f"Found {len(issues)} issues assigned to {g.login}")
 
     for issue in issues:
         print(f"- {issue.slug} - {issue.title}")
