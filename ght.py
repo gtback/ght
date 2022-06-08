@@ -153,6 +153,19 @@ class GitHub:
         return self.client.search_issues(f"is:issue is:open assignee:{self.login}")
 
 
+def find_github_token():
+    # Get GitHub token from environment variable, otherwise fall back to
+    # `.ghtoken` config file.
+    ghtoken = os.environ.get("GITHUB_TOKEN")
+    if not ghtoken:
+        try:
+            ghtoken = open(".ghtoken").read().strip()
+        except:
+            print("No GitHub token available. Set GITHUB_TOKEN or create .ghtoken file")
+            sys.exit(1)
+    return ghtoken
+
+
 @click.group()
 def cli():
     pass
@@ -163,16 +176,7 @@ def cli():
 def sync(dry_run):
     conf = yaml.safe_load(open("ght.conf.yaml"))
 
-    # Get GitHub token from environment variable, otherwise fall back to
-    # `.ghtoken` config file.
-    ghtoken = os.environ.get("GITHUB_TOKEN")
-    if not ghtoken:
-        try:
-            ghtoken = open(".ghtoken").read().strip()
-        except:
-            print("No GitHub token available. Set GITHUB_TOKEN or create .ghtoken file")
-            sys.exit(1)
-
+    ghtoken = find_github_token()
     g = GitHub(ghtoken)
 
     search_results = g.get_assigned_issues()
