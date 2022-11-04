@@ -54,10 +54,9 @@ class Todoist:
         ttoken = open(".todoist-token").read().strip()
         self.client = todoist.TodoistAPI(ttoken)
 
-        # Label to add to all issues created by this tool
-        self.gh = self.get_or_create_label(conf['ght_label'])['id']
-        # Label to add to tasks which involve waiting for someone else.
-        self.waiting = self.get_or_create_label(conf['waiting_label'])['id']
+        self.labels = {}
+        for (key, text) in conf["labels"].items():
+            self.labels[key] = self.get_or_create_label(text)
 
         self.client.sync()
         self.default_project = self.get_project(conf['default'])
@@ -129,14 +128,17 @@ class Todoist:
     def add_gh_issue_to_todoist(self, issue: Issue):
         t_project = self.project_mapping.get(issue.repo, self.default_project)
 
+        project_id = t_project['id'],
+        labels = [self.labels['_default_']],
         if not DRY_RUN:
             top_item = self.client.items.add(
                 issue.markdown_link,
-                project_id = t_project['id'],
-                labels = [self.gh],
+                project_id=project_id,
+                labels=labels,
             )
         else:
-            print(f"would create item: '{issue.title}'")
+            print(f"would create item: '{issue.title}' with labels '{labels}'")
+            top_item = {'id': "PLACEHOLDER"}
 
         content = f"#managed-by-ght\nghid={issue._issue.id}"
         if not DRY_RUN:
@@ -146,7 +148,7 @@ class Todoist:
 
         if not DRY_RUN:
             self.client.items.add("Make PR", parent_id = top_item['id'], labels=[])
-            self.client.items.add("Reviewers - Review PR", parent_id = top_item['id'], labels=[self.waiting])
+            self.client.items.add("Reviewers - Review PR", parent_id = top_item['id'], labels=[self.labels['waiting']])
             self.client.items.add("Merge PR", parent_id = top_item['id'], labels=[])
             self.client.items.add("Validate", parent_id = top_item['id'], labels=[])
         else:

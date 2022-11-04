@@ -6,5 +6,7 @@ mapping:
   gtback/ght: Projects
 default: TestProject
 
-ght_label: ght
-waiting_label: waiting
+labels:
+  _default_: "gh"
+  waiting: "waiting-for"
+
