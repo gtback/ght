@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2022 Greg Back <git@gregback.net>
+# SPDX-License-Identifier: MIT
+
+[project]
+name = "ght"
+version = "0.0.1"
+dependencies = [
+    "click",
+    "colorama",
+    "github3.py",
+    "pyyaml",
+    "todoist-python",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
