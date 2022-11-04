@@ -54,6 +54,8 @@ class Todoist:
         ttoken = open(".todoist-token").read().strip()
         self.client = todoist.TodoistAPI(ttoken)
 
+        self.template = conf['templates']['_default_']
+
         self.labels = {}
         for (key, text) in conf["labels"].items():
             self.labels[key] = self.get_or_create_label(text)
@@ -146,13 +148,19 @@ class Todoist:
         else:
             print(f"would add note: '{content!r}'")
 
-        if not DRY_RUN:
-            self.client.items.add("Make PR", parent_id = top_item['id'], labels=[])
-            self.client.items.add("Reviewers - Review PR", parent_id = top_item['id'], labels=[self.labels['waiting']])
-            self.client.items.add("Merge PR", parent_id = top_item['id'], labels=[])
-            self.client.items.add("Validate", parent_id = top_item['id'], labels=[])
-        else:
-            print(f"would add child notes:")
+        for child in self.template.get("children", []):
+            args = {'parent_id': top_item['id']}
+            if isinstance(child, str):
+                args['labels'] = []
+                content = child
+            else:
+                args['labels'] = [self.labels[x] for x in child.get('labels', [])]
+                content = child['content']
+
+            if not DRY_RUN:
+                self.client.items.add(content, **args)
+            else:
+                print(f"would add child: '{content}' with labels '{args['labels']}'")
 
         if not DRY_RUN:
             self.client.commit()

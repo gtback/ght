@@ -10,3 +10,11 @@ labels:
   _default_: "gh"
   waiting: "waiting-for"
 
+templates:
+  _default_:
+    children:
+      - "Make PR"
+      - content: "Reviewers - Review PR"
+        labels: [waiting]
+      - "Merge PR"
+      - "Validate"
