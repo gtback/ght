@@ -91,9 +91,12 @@ class Todoist:
                 l = label
                 break
         if not l:
-            l = self.client.labels.add(name, color=GRAY)
-            self.client.commit()
-            print(f"made label: {l}")
+            if DRY_RUN:
+                print(f"would create label: {l}")
+            else:
+                l = self.client.labels.add(name, color=GRAY)
+                self.client.commit()
+                print(f"made label: {l}")
         return l
 
     def get_managed_item(self, gh_id):
@@ -126,20 +129,31 @@ class Todoist:
     def add_gh_issue_to_todoist(self, issue: Issue):
         t_project = self.project_mapping.get(issue.repo, self.default_project)
 
-        top_item = self.client.items.add(
-            issue.markdown_link,
-            project_id = t_project['id'],
-            labels = [self.gh],
-        )
+        if not DRY_RUN:
+            top_item = self.client.items.add(
+                issue.markdown_link,
+                project_id = t_project['id'],
+                labels = [self.gh],
+            )
+        else:
+            print(f"would create item: '{issue.title}'")
+
         content = f"#managed-by-ght\nghid={issue._issue.id}"
-        self.client.notes.add(top_item['id'], content)
+        if not DRY_RUN:
+            self.client.notes.add(top_item['id'], content)
+        else:
+            print(f"would add note: '{content!r}'")
 
-        self.client.items.add("Make PR", parent_id = top_item['id'], labels=[])
-        self.client.items.add("Reviewers - Review PR", parent_id = top_item['id'], labels=[self.waiting])
-        self.client.items.add("Merge PR", parent_id = top_item['id'], labels=[])
-        self.client.items.add("Validate", parent_id = top_item['id'], labels=[])
+        if not DRY_RUN:
+            self.client.items.add("Make PR", parent_id = top_item['id'], labels=[])
+            self.client.items.add("Reviewers - Review PR", parent_id = top_item['id'], labels=[self.waiting])
+            self.client.items.add("Merge PR", parent_id = top_item['id'], labels=[])
+            self.client.items.add("Validate", parent_id = top_item['id'], labels=[])
+        else:
+            print(f"would add child notes:")
 
-        self.client.commit()
+        if not DRY_RUN:
+            self.client.commit()
 
 
 class GitHub:
@@ -177,6 +191,10 @@ def cli():
 @cli.command()
 @click.option("-n", "--dry-run", is_flag=True)
 def sync(dry_run):
+
+    global DRY_RUN
+    DRY_RUN = dry_run
+
     conf = yaml.safe_load(open("ght.conf.yaml"))
 
     ghtoken = find_github_token()
@@ -200,8 +218,7 @@ def sync(dry_run):
             print(f"{issue.slug}: Item already exists: https://todoist.com/showTask?id={existing_item['item']['id']}")
         else:
             print(Fore.GREEN + f"{issue.slug}: Creating item")
-            if not dry_run:
-                t.add_gh_issue_to_todoist(issue)
+            t.add_gh_issue_to_todoist(issue)
 
 if __name__ == "__main__":
     cli()
