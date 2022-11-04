@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Greg Back <git@gregback.net>
+# SPDX-License-Identifier: CC0-1.0
+
 click
 colorama
 github3.py

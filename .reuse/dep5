@@ -1,0 +1,12 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: ght
+Upstream-Contact: Greg Back <git@gregback.net>
+Source: https://github.com/gtback/ght
+
+Files: requirements*.txt
+Copyright: 2022 Greg Back <git@gregback.net>
+License: CC0-1.0
+
+Files: .vscode/*
+Copyright: 2022 Greg Back <git@gregback.net>
+License: CC0-1.0
