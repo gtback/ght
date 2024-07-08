@@ -231,9 +231,9 @@ ipykernel==6.17.1 \
     #   nbclassic
     #   notebook
     #   qtconsole
-ipython==8.6.0 \
-    --hash=sha256:7c959e3dedbf7ed81f9b9d8833df252c430610e2a4a6464ec13cd20975ce20a5 \
-    --hash=sha256:91ef03016bcf72dd17190f863476e7c799c6126ec7e8be97719d1bc9a78a59a4
+ipython==8.10.0 \
+    --hash=sha256:b13a1d6c1f5818bd388db53b7107d17454129a70de2b87481d555daede5eb49e \
+    --hash=sha256:b38c31e8fc7eff642fc7c597061fff462537cf2314e3225a19c906b7b0d8a345
     # via
     #   ipykernel
     #   ipywidgets
